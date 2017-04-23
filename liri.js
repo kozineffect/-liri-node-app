@@ -1,8 +1,13 @@
 var request = require('request');
-
 var Twitter = require('twitter');
 var spotify = require('spotify');
-var client = require("./keys.js");
+// var client = require("./keys.js");
+var client = new Twitter({ 
+  consumer_key: 'I78KLgdlrhuQ0vloGTRPg6fk9',
+  consumer_secret: 'KjIDKBHzmRKhDNyfaBgbu3aQXS4gAm1S02co1xD77rhdOn0BJf',
+  access_token_key: '855142132184698880-0Pym3VFWrX9vklfqlVrRwxIz2PB6DaI',
+  access_token_secret: 'lDAShkOiFxX8DDqCK9EUBFBHksuR9S7kTFfBYjuXagx4e'
+});
 
 var to_do = process.argv[2];
 var queryArr = [];
@@ -13,13 +18,18 @@ for (var i = 3; i < process.argv.length; i++) {
 }
 var query = queryArr.toString();
 var queryUrl = "http://www.omdbapi.com/?t=" + query + "&y=&plot=short&r=json";
-console.log(client);
-// var params = {screen_name: 'joseph_koz'};
-// client.get('statuses/user_timeline', params, function(error, tweets, response) {
-//   if (!error) {
-//     console.log(tweets);
-//   }
-// });
+// console.log(client);
+var params = {screen_name: 'joseph_koz'};
+if (to_do === "my-tweets"){
+client.get('statuses/user_timeline', params, function(error, tweets, response) {
+  if (!error) {
+    console.log(tweets.length);
+    for (var x = 0; x < tweets.length; x++){
+    console.log(tweets[x].text);
+    }
+  }
+});
+}
 if (to_do === "spotify-this-song") {
     spotify.search({
         type: 'track',
@@ -29,10 +39,10 @@ if (to_do === "spotify-this-song") {
             console.log('Error occurred: ' + err);
             return;
         }
-        console.log(JSON.stringify(data.tracks.items[0].artist, null, 2));
+        console.log(data.tracks.items[0].artist);
         console.log(query);
-        console.log(JSON.stringify(data.tracks.items[0].album, null, 2));
-        console.log(JSON.stringify(data.tracks.items[0].preview_url, null, 2));
+        console.log(data.tracks.items[0].album);
+        console.log(data.tracks.items[0].preview_url);
         // console.log(JSON.stringify(data, null, 2));
         // Do something with 'data' 
     });
